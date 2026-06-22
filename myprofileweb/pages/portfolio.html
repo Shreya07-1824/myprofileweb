@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Projects | Shreya Patil</title>
+  <meta name="description" content="Explore frontend, Java, full stack, UI/UX, and database portfolio projects by freelance developer Shreya Patil.">
+  <meta name="keywords" content="frontend developer portfolio, Java developer, full stack portfolio, database projects, responsive website developer">
+  <meta name="author" content="Shreya Patil">
+  <link rel="canonical" href="https://shreyapatil.dev/pages/portfolio.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Portfolio Projects by Shreya Patil">
+  <meta property="og:description" content="Project cards with demos, technology tags, categories, and details.">
+  <meta property="og:image" content="https://shreyapatil.dev/images/og-cover.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../images/profile-portrait.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+</head>
+<body data-page="portfolio" data-root="..">
+  <div class="loader" data-loader><span class="loader-mark" aria-hidden="true"></span><span class="sr-only">Loading</span></div>
+  <div id="site-header"></div>
+
+  <main id="main-content">
+    <section class="page-hero section-dark" aria-labelledby="portfolio-title">
+      <div class="container page-hero-content reveal">
+        <p class="eyebrow">Portfolio</p>
+        <h1 id="portfolio-title">Project concepts that prove design, code, and business thinking.</h1>
+        <p>Use the filters to explore frontend, Java, full stack, UI/UX, and database builds. Open a project to see details and tech choices.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="projects-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Filter work</p>
+          <h2 id="projects-title">Browse project categories.</h2>
+        </div>
+        <div class="filter-row" data-project-filters></div>
+        <div class="project-grid" data-project-grid></div>
+      </div>
+    </section>
+
+    <section class="section muted-section" aria-labelledby="before-title">
+      <div class="container split-layout">
+        <div class="section-lead reveal">
+          <p class="eyebrow">Before and after</p>
+          <h2 id="before-title">The goal is not just prettier UI. It is clearer action.</h2>
+          <p>A useful redesign improves page structure, mobile spacing, CTA visibility, trust sections, and form completion. This comparison shows the type of transformation clients should expect.</p>
+        </div>
+        <div class="before-after reveal" data-before-after>
+          <div class="before-pane">
+            <span>Before</span>
+            <p>Generic layout, weak CTA, cluttered text.</p>
+          </div>
+          <div class="after-pane">
+            <span>After</span>
+            <p>Clear offer, proof points, responsive flow.</p>
+          </div>
+          <input type="range" min="20" max="80" value="50" aria-label="Compare before and after" data-compare-slider>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="progress-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Live project statistics</p>
+          <h2 id="progress-title">How I track build quality.</h2>
+        </div>
+        <div class="progress-grid">
+          <article class="progress-card reveal"><span>Performance</span><strong>92%</strong><div><i style="width:92%"></i></div></article>
+          <article class="progress-card reveal"><span>Responsive QA</span><strong>100%</strong><div><i style="width:100%"></i></div></article>
+          <article class="progress-card reveal"><span>SEO Basics</span><strong>88%</strong><div><i style="width:88%"></i></div></article>
+          <article class="progress-card reveal"><span>Accessibility Pass</span><strong>90%</strong><div><i style="width:90%"></i></div></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <button class="scroll-top icon-btn" type="button" data-scroll-top aria-label="Scroll to top"><i data-lucide="arrow-up"></i></button>
+  <a class="whatsapp-float" href="https://wa.me/9503341704?text=Hi%20Shreya%2C%20I%20want%20to%20discuss%20a%20project" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i data-lucide="message-circle"></i></a>
+  <div data-project-modal></div>
+
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script defer src="../js/site-data.js"></script>
+  <script defer src="../js/script.js"></script>
+  <script defer src="../js/validation.js"></script>
+</body>
+</html>
