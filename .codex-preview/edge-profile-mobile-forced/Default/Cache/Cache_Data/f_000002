@@ -1,0 +1,615 @@
+(function () {
+  "use strict";
+
+  const data = window.SiteData;
+  const body = document.body;
+  const root = body.dataset.root || ".";
+  const currentPage = body.dataset.page || "home";
+  const prefix = root === "." ? "" : root + "/";
+  const qs = (selector, scope = document) => scope.querySelector(selector);
+  const qsa = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
+
+  function fromRoot(path) {
+    if (!path || /^(https?:|mailto:|tel:|#)/.test(path)) return path;
+    return prefix + path;
+  }
+
+  function icon(name) {
+    return `<i data-lucide="${name}" aria-hidden="true"></i>`;
+  }
+
+  function refreshIcons() {
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  }
+
+  function initLoader() {
+    const loader = qs("[data-loader]");
+    if (!loader) return;
+    const hide = () => loader.classList.add("is-hidden");
+    window.addEventListener("load", () => {
+      setTimeout(hide, 220);
+    }, { once: true });
+    setTimeout(hide, 950);
+  }
+
+  function buildHeader() {
+    const target = qs("#site-header");
+    if (!target) return;
+    const navLinks = data.nav.map((item) => `
+      <a href="${fromRoot(item.href)}" class="${item.page === currentPage ? "active" : ""}" ${item.page === currentPage ? 'aria-current="page"' : ""}>${item.label}</a>
+    `).join("");
+
+    target.innerHTML = `
+      <a class="skip-link" href="#main-content">Skip to content</a>
+      <header class="site-header" data-header>
+        <div class="container nav-shell">
+          <a class="brand" href="${fromRoot("index.html")}" aria-label="Shreya Patil home">
+            <span>SP</span>
+            <strong>Shreya Patil</strong>
+          </a>
+          <nav class="nav-menu" id="primary-nav" aria-label="Primary navigation">
+            ${navLinks}
+          </nav>
+          <div class="nav-actions">
+            <button class="icon-btn" type="button" data-theme-toggle aria-label="Toggle dark mode">${icon("moon")}</button>
+            <a class="btn btn-nav" href="${fromRoot("pages/contact.html")}">${icon("send")} Hire me</a>
+            <button class="icon-btn menu-toggle" type="button" data-menu-toggle aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu">${icon("menu")}</button>
+          </div>
+        </div>
+      </header>
+    `;
+  }
+
+  function buildFooter() {
+    const target = qs("#site-footer");
+    if (!target) return;
+    const navLinks = data.nav.map((item) => `<a href="${fromRoot(item.href)}">${item.label}</a>`).join("");
+    const socialLinks = data.socials.map((item) => `
+      <a class="icon-btn" href="${item.href}" target="_blank" rel="noopener" aria-label="${item.label}">
+        ${icon(item.icon)}
+      </a>
+    `).join("");
+
+    target.innerHTML = `
+      <footer class="site-footer">
+        <div class="container footer-grid">
+          <section>
+            <a class="brand footer-brand" href="${fromRoot("index.html")}"><span>SP</span><strong>Shreya Patil</strong></a>
+            <p>Freelance full stack and frontend developer for responsive websites, Java projects, dashboards, and lead-focused web experiences.</p>
+            <div class="social-row">${socialLinks}</div>
+          </section>
+          <nav aria-label="Footer navigation">
+            <h2>Pages</h2>
+            ${navLinks}
+          </nav>
+          <section>
+            <h2>Contact</h2>
+            <a href="mailto:${data.email}">${data.email}</a>
+            <a href="tel:${data.phone.replace(/\s/g, "")}">${data.phone}</a>
+            <a href="https://wa.me/${data.whatsapp}" target="_blank" rel="noopener">WhatsApp enquiry</a>
+          </section>
+          <section>
+            <h2>Newsletter</h2>
+            <p>Get practical website and project tips.</p>
+            <form class="newsletter-form" action="${fromRoot("backend/newsletter.php")}" method="post" novalidate data-newsletter-form>
+              <label class="sr-only" for="newsletter-email">Email address</label>
+              <input id="newsletter-email" name="email" type="email" placeholder="Email address" required>
+              <button class="icon-btn" type="submit" aria-label="Subscribe">${icon("arrow-right")}</button>
+              <small data-newsletter-status role="status" aria-live="polite"></small>
+            </form>
+          </section>
+        </div>
+        <div class="container footer-bottom">
+          <span>&copy; <span data-year></span> Shreya Patil. All rights reserved.</span>
+          <span>Built with HTML5, CSS3, JavaScript, PHP, and MySQL-ready forms.</span>
+        </div>
+      </footer>
+    `;
+  }
+
+  function initHeaderBehavior() {
+    const header = qs("[data-header]");
+    const toggle = qs("[data-menu-toggle]");
+    const menu = qs("#primary-nav");
+    const themeBtn = qs("[data-theme-toggle]");
+
+    if (header) {
+      const setHeader = () => header.classList.toggle("is-scrolled", window.scrollY > 8);
+      setHeader();
+      window.addEventListener("scroll", setHeader, { passive: true });
+    }
+
+    if (toggle && menu) {
+      toggle.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        menu.classList.toggle("is-open", !expanded);
+        toggle.innerHTML = icon(expanded ? "menu" : "x");
+        refreshIcons();
+      });
+    }
+
+    const savedTheme = localStorage.getItem("portfolio-theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setTheme(savedTheme || (prefersDark ? "dark" : "light"));
+
+    if (themeBtn) {
+      themeBtn.addEventListener("click", () => {
+        const next = body.dataset.theme === "dark" ? "light" : "dark";
+        setTheme(next);
+      });
+    }
+  }
+
+  function setTheme(theme) {
+    body.dataset.theme = theme;
+    localStorage.setItem("portfolio-theme", theme);
+    const themeBtn = qs("[data-theme-toggle]");
+    if (themeBtn) {
+      themeBtn.innerHTML = icon(theme === "dark" ? "sun" : "moon");
+      refreshIcons();
+    }
+  }
+
+  function renderServices() {
+    const preview = qs("[data-service-preview]");
+    const full = qs("[data-service-grid]");
+    const makeCard = (service) => `
+      <article class="service-card reveal">
+        ${icon(service.icon)}
+        <h3>${service.title}</h3>
+        <p>${service.summary}</p>
+        <div class="tag-row">${service.tags.map((tag) => `<span>${tag}</span>`).join("")}</div>
+      </article>
+    `;
+    if (preview) preview.innerHTML = data.services.slice(0, 3).map(makeCard).join("");
+    if (full) full.innerHTML = data.services.map(makeCard).join("");
+  }
+
+  function renderProjects() {
+    const grid = qs("[data-project-grid]");
+    if (!grid) return;
+    const filters = qs("[data-project-filters]") || qs("[data-home-filters]");
+    let active = "All";
+    const categories = ["All", "Frontend", "Java", "Full Stack", "UI/UX", "Database Projects"];
+
+    if (filters) {
+      filters.innerHTML = categories.map((category) => `
+        <button type="button" class="filter-btn ${category === active ? "active" : ""}" data-filter="${category}">${category}</button>
+      `).join("");
+    }
+
+    function card(project) {
+      return `
+        <article class="project-card reveal" data-category="${project.category}">
+          <img src="${fromRoot(project.image)}" alt="${project.title} screenshot mockup" loading="lazy">
+          <div class="project-body">
+            <span class="project-category">${project.category}</span>
+            <h3>${project.title}</h3>
+            <p>${project.summary}</p>
+            <div class="tag-row">${project.tech.map((tag) => `<span>${tag}</span>`).join("")}</div>
+            <div class="project-actions">
+              <a class="btn btn-small" href="${fromRoot(project.demo)}">${icon("external-link")} Demo</a>
+              <a class="icon-btn" href="${project.github}" target="_blank" rel="noopener" aria-label="Open GitHub">${icon("github")}</a>
+              <button class="icon-btn" type="button" data-project-open="${project.id}" aria-label="View project details">${icon("info")}</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function paint() {
+      const limit = Number(grid.dataset.limit || 0);
+      const filtered = active === "All" ? data.projects : data.projects.filter((project) => project.category === active);
+      const visible = limit ? filtered.slice(0, limit) : filtered;
+      grid.innerHTML = visible.map(card).join("");
+      refreshIcons();
+      initReveal();
+    }
+
+    if (filters) {
+      filters.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-filter]");
+        if (!button) return;
+        active = button.dataset.filter;
+        qsa("[data-filter]", filters).forEach((item) => item.classList.toggle("active", item === button));
+        paint();
+      });
+    }
+
+    grid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-project-open]");
+      if (button) openProjectModal(button.dataset.projectOpen);
+    });
+
+    paint();
+  }
+
+  function openProjectModal(projectId) {
+    const project = data.projects.find((item) => item.id === projectId);
+    const mount = qs("[data-project-modal]");
+    if (!project || !mount) return;
+    mount.innerHTML = `
+      <div class="modal-backdrop is-open" data-modal-backdrop>
+        <article class="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          <button class="icon-btn modal-close" type="button" data-modal-close aria-label="Close project details">${icon("x")}</button>
+          <img src="${fromRoot(project.image)}" alt="${project.title} project preview" loading="lazy">
+          <div>
+            <span class="project-category">${project.category}</span>
+            <h2 id="modal-title">${project.title}</h2>
+            <p>${project.details}</p>
+            <div class="tag-row">${project.tech.map((tag) => `<span>${tag}</span>`).join("")}</div>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="${fromRoot(project.demo)}">${icon("external-link")} View demo path</a>
+              <a class="btn btn-secondary" href="${project.github}" target="_blank" rel="noopener">${icon("github")} GitHub</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    `;
+    refreshIcons();
+    const close = () => (mount.innerHTML = "");
+    qs("[data-modal-close]", mount).addEventListener("click", close);
+    qs("[data-modal-backdrop]", mount).addEventListener("click", (event) => {
+      if (event.target.matches("[data-modal-backdrop]")) close();
+    });
+    document.addEventListener("keydown", function escapeHandler(event) {
+      if (event.key === "Escape") {
+        close();
+        document.removeEventListener("keydown", escapeHandler);
+      }
+    });
+  }
+
+  function renderTestimonials() {
+    const target = qs("[data-testimonials]");
+    if (!target) return;
+    let index = 0;
+
+    function paint() {
+      const item = data.testimonials[index];
+      target.innerHTML = `
+        <article class="testimonial-card">
+          <img src="${fromRoot(item.photo)}" alt="${item.name} client portrait" loading="lazy">
+          <div>
+            <p>"${item.quote}"</p>
+            <strong>${item.name}</strong>
+            <span>${item.role}</span>
+          </div>
+        </article>
+        <div class="testimonial-controls">
+          <button class="icon-btn" type="button" data-testimonial-prev aria-label="Previous testimonial">${icon("arrow-left")}</button>
+          <span>${index + 1} / ${data.testimonials.length}</span>
+          <button class="icon-btn" type="button" data-testimonial-next aria-label="Next testimonial">${icon("arrow-right")}</button>
+        </div>
+      `;
+      refreshIcons();
+      qs("[data-testimonial-prev]", target).addEventListener("click", () => {
+        index = (index - 1 + data.testimonials.length) % data.testimonials.length;
+        paint();
+      });
+      qs("[data-testimonial-next]", target).addEventListener("click", () => {
+        index = (index + 1) % data.testimonials.length;
+        paint();
+      });
+    }
+
+    paint();
+  }
+
+  function renderSkillBars() {
+    const target = qs("[data-skill-bars]");
+    if (!target) return;
+    target.innerHTML = data.skills.map((skill) => `
+      <div class="skill-item">
+        <div><span>${skill.label}</span><strong>${skill.value}%</strong></div>
+        <progress value="${skill.value}" max="100">${skill.value}%</progress>
+      </div>
+    `).join("");
+  }
+
+  function renderTimeline() {
+    const target = qs("[data-timeline]");
+    if (!target) return;
+    target.innerHTML = data.timeline.map((item, index) => `
+      <article class="timeline-item reveal">
+        <span>${String(index + 1).padStart(2, "0")}</span>
+        <h3>${item.step}</h3>
+        <p>${item.text}</p>
+      </article>
+    `).join("");
+  }
+
+  function renderFaq() {
+    const target = qs("[data-faq]");
+    if (!target) return;
+    target.innerHTML = data.faqs.map((item, index) => `
+      <article class="faq-item">
+        <button type="button" aria-expanded="${index === 0 ? "true" : "false"}">
+          <span>${item.q}</span>
+          ${icon("chevron-down")}
+        </button>
+        <p ${index === 0 ? "" : "hidden"}>${item.a}</p>
+      </article>
+    `).join("");
+
+    target.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      const item = button.closest(".faq-item");
+      const paragraph = qs("p", item);
+      const expanded = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!expanded));
+      paragraph.hidden = expanded;
+    });
+  }
+
+  function initCounters() {
+    const counters = qsa("[data-counter]");
+    if (!counters.length) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const counter = entry.target;
+        const target = Number(counter.dataset.target);
+        const duration = 1300;
+        const start = performance.now();
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          counter.textContent = Math.round(target * progress);
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        observer.unobserve(counter);
+      });
+    }, { threshold: 0.35 });
+    counters.forEach((counter) => observer.observe(counter));
+  }
+
+  function initReveal() {
+    const items = qsa(".reveal:not(.is-visible)");
+    if (!items.length) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    items.forEach((item) => observer.observe(item));
+  }
+
+  function initTyping() {
+    const target = qs("[data-typing]");
+    if (!target) return;
+    let roleIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function tick() {
+      const word = data.typingRoles[roleIndex];
+      target.textContent = deleting ? word.slice(0, charIndex--) : word.slice(0, charIndex++);
+      if (!deleting && charIndex > word.length + 6) deleting = true;
+      if (deleting && charIndex < 0) {
+        deleting = false;
+        roleIndex = (roleIndex + 1) % data.typingRoles.length;
+      }
+      setTimeout(tick, deleting ? 46 : 74);
+    }
+    tick();
+  }
+
+  function initClock() {
+    const target = qs("[data-clock]");
+    if (!target) return;
+    const update = () => {
+      target.textContent = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) + " IST";
+    };
+    update();
+    setInterval(update, 30000);
+  }
+
+  function initTerminal() {
+    const target = qs("[data-terminal]");
+    if (!target) return;
+    const lines = [
+      "$ npm run client-confidence",
+      "Scanning goals: trust, speed, responsive UI",
+      "Building sections: hero, proof, services, portfolio",
+      "Adding lead paths: WhatsApp, email, form, phone",
+      "Status: ready for a serious project discussion"
+    ];
+    let line = 0;
+    let char = 0;
+    function write() {
+      if (line >= lines.length) return;
+      target.textContent = lines.slice(0, line).join("\n") + (line ? "\n" : "") + lines[line].slice(0, char++);
+      if (char <= lines[line].length) {
+        setTimeout(write, 28);
+      } else {
+        line++;
+        char = 0;
+        setTimeout(write, 280);
+      }
+    }
+    write();
+  }
+
+  function initEstimator() {
+    const form = qs("[data-estimator]");
+    if (!form) return;
+    const output = qs("[data-estimate-output]", form);
+    const pagesOutput = qs("[data-pages-output]", form);
+    const format = (amount) => new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0
+    }).format(amount);
+
+    function update() {
+      const type = Number(form.elements.type.value);
+      const pages = Number(form.elements.pages.value);
+      const features = Number(form.elements.features.value);
+      const timeline = Number(form.elements.timeline.value);
+      const estimate = Math.round((type + pages * 1600 + features) * timeline / 500) * 500;
+      pagesOutput.textContent = `${pages} ${pages === 1 ? "page" : "pages"}`;
+      output.textContent = `Starting from ${format(estimate)}`;
+    }
+
+    form.addEventListener("input", update);
+    update();
+  }
+
+  function initChatbot() {
+    const target = qs("[data-chatbot]");
+    if (!target) return;
+    const replies = {
+      business: "For a business website, start with Home, Services, Proof, Portfolio, Contact, WhatsApp CTA, and local SEO basics.",
+      student: "For a student project, start with clear modules, database tables, validation, screenshots, and a simple presentation flow.",
+      startup: "For an MVP, start with a landing page, dashboard prototype, lead capture, analytics, and a scalable component system."
+    };
+    target.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-chat-choice]");
+      if (!button) return;
+      const response = document.createElement("p");
+      response.className = "bot-msg user-selected";
+      response.textContent = replies[button.dataset.chatChoice];
+      target.appendChild(response);
+      button.disabled = true;
+    });
+  }
+
+  function initBeforeAfter() {
+    const wrapper = qs("[data-before-after]");
+    const slider = qs("[data-compare-slider]");
+    if (!wrapper || !slider) return;
+    const update = () => wrapper.style.setProperty("--split", slider.value + "%");
+    slider.addEventListener("input", update);
+    update();
+  }
+
+  function initRadarChart() {
+    const canvas = qs("[data-radar-chart]");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const labels = ["UI", "Responsive", "JS", "PHP", "MySQL", "Java"];
+    const values = [94, 95, 88, 78, 82, 84];
+    const center = { x: canvas.width / 2, y: canvas.height / 2 };
+    const radius = 150;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "16px Inter, Arial, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    for (let level = 1; level <= 5; level++) {
+      ctx.beginPath();
+      labels.forEach((_, index) => {
+        const angle = Math.PI * 2 * index / labels.length - Math.PI / 2;
+        const pointRadius = radius * level / 5;
+        const x = center.x + Math.cos(angle) * pointRadius;
+        const y = center.y + Math.sin(angle) * pointRadius;
+        index === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.strokeStyle = "rgba(8, 127, 120, 0.18)";
+      ctx.stroke();
+    }
+
+    labels.forEach((label, index) => {
+      const angle = Math.PI * 2 * index / labels.length - Math.PI / 2;
+      const x = center.x + Math.cos(angle) * (radius + 38);
+      const y = center.y + Math.sin(angle) * (radius + 38);
+      ctx.fillStyle = getComputedStyle(body).getPropertyValue("--text");
+      ctx.fillText(label, x, y);
+      ctx.beginPath();
+      ctx.moveTo(center.x, center.y);
+      ctx.lineTo(center.x + Math.cos(angle) * radius, center.y + Math.sin(angle) * radius);
+      ctx.strokeStyle = "rgba(16, 33, 31, 0.12)";
+      ctx.stroke();
+    });
+
+    ctx.beginPath();
+    values.forEach((value, index) => {
+      const angle = Math.PI * 2 * index / values.length - Math.PI / 2;
+      const pointRadius = radius * value / 100;
+      const x = center.x + Math.cos(angle) * pointRadius;
+      const y = center.y + Math.sin(angle) * pointRadius;
+      index === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = "rgba(255, 107, 95, 0.22)";
+    ctx.strokeStyle = "#ff6b5f";
+    ctx.lineWidth = 3;
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  function initVoiceIntro() {
+    const button = qs("[data-voice-intro]");
+    if (!button || !("speechSynthesis" in window)) return;
+    button.addEventListener("click", () => {
+      window.speechSynthesis.cancel();
+      const message = new SpeechSynthesisUtterance("Hi, I am Shreya Patil. I build modern responsive websites, Java projects, and full stack web experiences for clients who want to look professional online.");
+      message.rate = 0.95;
+      window.speechSynthesis.speak(message);
+    });
+  }
+
+  function initScrollTools() {
+    const button = qs("[data-scroll-top]");
+    if (!button) return;
+    const toggle = () => button.classList.toggle("is-visible", window.scrollY > 550);
+    button.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    window.addEventListener("scroll", toggle, { passive: true });
+    toggle();
+  }
+
+  function initPrint() {
+    const button = qs("[data-print-resume]");
+    if (button) button.addEventListener("click", () => window.print());
+  }
+
+  function initCursorGlow() {
+    window.addEventListener("pointermove", (event) => {
+      body.style.setProperty("--cursor-x", event.clientX + "px");
+      body.style.setProperty("--cursor-y", event.clientY + "px");
+    }, { passive: true });
+  }
+
+  function initYear() {
+    qsa("[data-year]").forEach((item) => {
+      item.textContent = new Date().getFullYear();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initLoader();
+    buildHeader();
+    buildFooter();
+    renderServices();
+    renderProjects();
+    renderTestimonials();
+    renderSkillBars();
+    renderTimeline();
+    renderFaq();
+    initHeaderBehavior();
+    initCounters();
+    initReveal();
+    initTyping();
+    initClock();
+    initTerminal();
+    initEstimator();
+    initChatbot();
+    initBeforeAfter();
+    initRadarChart();
+    initVoiceIntro();
+    initScrollTools();
+    initPrint();
+    initCursorGlow();
+    initYear();
+    refreshIcons();
+  });
+})();

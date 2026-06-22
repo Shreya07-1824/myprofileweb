@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Shreya Patil freelance developer portfolio cover</title>
+  <desc id="desc">Open Graph cover artwork for Shreya Patil portfolio website.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8f4ec"/>
+      <stop offset="0.58" stop-color="#e9fbf9"/>
+      <stop offset="1" stop-color="#fff1ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="84" y="82" width="1032" height="466" rx="28" fill="#10211f"/>
+  <rect x="130" y="130" width="420" height="56" rx="28" fill="#b9f227"/>
+  <text x="130" y="286" fill="#f8f4ec" font-family="Arial, sans-serif" font-size="86" font-weight="700">Shreya Patil</text>
+  <text x="134" y="358" fill="#d9fff7" font-family="Arial, sans-serif" font-size="34">Freelance Full Stack &amp; Frontend Developer</text>
+  <rect x="134" y="424" width="254" height="54" rx="27" fill="#ff6b5f"/>
+  <text x="167" y="461" fill="#ffffff" font-family="Arial, sans-serif" font-size="22" font-weight="700">Hire for your next project</text>
+  <rect x="704" y="145" width="282" height="318" rx="28" fill="#f8f4ec"/>
+  <path d="M750 333 C798 255 846 361 906 271" fill="none" stroke="#087f78" stroke-width="20" stroke-linecap="round"/>
+  <rect x="750" y="198" width="164" height="20" rx="10" fill="#10211f"/>
+  <rect x="750" y="238" width="110" height="14" rx="7" fill="#ff6b5f"/>
+</svg>
