@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Shreya Patil | Hire Freelance Developer</title>
+  <meta name="description" content="Contact Shreya Patil for freelance frontend, full stack, Java, website design, and responsive web development projects.">
+  <meta name="keywords" content="hire freelance web developer, frontend developer contact, responsive website developer, Java developer India">
+  <meta name="author" content="Shreya Patil">
+  <link rel="canonical" href="https://shreyapatil.dev/pages/contact.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact Shreya Patil">
+  <meta property="og:description" content="Start a freelance website, Java, full stack, or frontend project.">
+  <meta property="og:image" content="https://shreyapatil.dev/images/og-cover.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../images/profile-portrait.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+</head>
+<body data-page="contact" data-root="..">
+  <div class="loader" data-loader><span class="loader-mark" aria-hidden="true"></span><span class="sr-only">Loading</span></div>
+  <div id="site-header"></div>
+
+  <main id="main-content">
+    <section class="page-hero section-dark" aria-labelledby="contact-title">
+      <div class="container page-hero-content reveal">
+        <p class="eyebrow">Contact</p>
+        <h1 id="contact-title">Tell me what you want to build. I will help shape the next step.</h1>
+        <p>Use the form, WhatsApp, email, or call button. The form includes frontend validation and a PHP/MySQL storage example.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="contact-options-title">
+      <div class="container contact-grid">
+        <aside class="contact-aside reveal" aria-labelledby="contact-options-title">
+          <p class="eyebrow">Fast contact</p>
+          <h2 id="contact-options-title">Pick the channel that is easiest.</h2>
+          <div class="contact-actions">
+            <a href="https://wa.me/9503341704?text=Hi%20Shreya%2C%20I%20want%20to%20discuss%20a%20project" target="_blank" rel="noopener"><i data-lucide="message-circle"></i> WhatsApp</a>
+            <a href="tel:+919503341704"><i data-lucide="phone"></i> Call</a>
+            <a href="mailto:sp405957@gmail.com"><i data-lucide="mail"></i> Email</a>
+            <a href="https://www.linkedin.com/in/shreyapatil" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+             <a href="https://www.instagram.com/shreya_patil_" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i> Instagram</a>
+          </div>
+          <div class="availability-card">
+            <span class="status-pill live">Usually replies within 24 hours</span>
+            <p>Preferred details: project type, deadline, pages/features, reference websites, and budget range.</p>
+          </div>
+        </aside>
+
+        <form class="contact-form reveal" id="contactForm" action="../backend/contact.php" method="post" enctype="multipart/form-data" novalidate data-contact-form>
+          <div class="form-row">
+            <label>
+              Full name
+              <input type="text" name="name" autocomplete="name" placeholder="Your name" required minlength="2">
+              <small data-error-for="name"></small>
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+              <small data-error-for="email"></small>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Phone
+              <input type="tel" name="phone" autocomplete="tel" placeholder="+91 98765 43210" required>
+              <small data-error-for="phone"></small>
+            </label>
+            <label>
+              Service
+              <select name="service" required>
+                <option value="">Select service</option>
+                <option>Frontend website</option>
+                <option>Full stack web app</option>
+                <option>Java project</option>
+                <option>UI/UX redesign</option>
+                <option>Database project</option>
+              </select>
+              <small data-error-for="service"></small>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Budget range
+              <select name="budget" required>
+                <option value="">Select budget</option>
+                <option>Rs. 8k - 15k</option>
+                <option>Rs. 18k - 35k</option>
+                <option>Rs. 40k+</option>
+                <option>Need guidance</option>
+              </select>
+              <small data-error-for="budget"></small>
+            </label>
+            <label>
+              Reference file
+              <input type="file" name="attachment" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+              <small data-error-for="attachment"></small>
+            </label>
+          </div>
+          <label>
+            Project message
+            <textarea name="message" rows="7" placeholder="Tell me about your project, timeline, and goals." required minlength="25"></textarea>
+            <small data-error-for="message"></small>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="consent" required>
+            I agree to be contacted about this project.
+            <small data-error-for="consent"></small>
+          </label>
+          <button class="btn btn-primary" type="submit">
+            <i data-lucide="send"></i>
+            Send enquiry
+          </button>
+          <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section muted-section" aria-labelledby="map-title">
+      <div class="container map-layout">
+        <div class="section-lead reveal">
+          <p class="eyebrow">Location</p>
+          <h2 id="map-title">Remote-first from India.</h2>
+          <p>This responsive Google Maps iframe demonstrates correct iframe usage for contact pages. Replace the location with your exact city or office address when needed.</p>
+        </div>
+        <div class="map-frame reveal">
+          <iframe title="Map showing Pune, Maharashtra, India" src="https://www.google.com/maps?q=Pune%2C%20Maharashtra%2C%20India&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <button class="scroll-top icon-btn" type="button" data-scroll-top aria-label="Scroll to top"><i data-lucide="arrow-up"></i></button>
+  <a class="whatsapp-float" href="https://wa.me/919876543210?text=Hi%20Shreya%2C%20I%20want%20to%20discuss%20a%20project" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i data-lucide="message-circle"></i></a>
+
+  <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script defer src="../js/site-data.js"></script>
+  <script defer src="../js/script.js"></script>
+  <script defer src="../js/validation.js"></script>
+</body>
+</html>
