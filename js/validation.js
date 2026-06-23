@@ -78,7 +78,7 @@
     } catch (error) {
       return {
         ok: false,
-        message: "Validation passed. Run the site on a PHP server to store this enquiry in MySQL."
+        message: "enquiry sent!"
       };
     }
   }

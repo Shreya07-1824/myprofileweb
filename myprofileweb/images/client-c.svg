@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-labelledby="title">
-  <title id="title">Client portrait avatar</title>
-  <rect width="240" height="240" rx="32" fill="#fff6e6"/>
-  <circle cx="120" cy="94" r="49" fill="#ffd2c9"/>
-  <path d="M54 214 C66 166 91 143 120 143 C149 143 174 166 186 214 Z" fill="#ff6b5f"/>
-  <path d="M73 91 C83 43 133 26 171 57 C190 72 191 99 177 129 C155 101 128 105 96 77 C89 99 78 119 63 137 C59 119 59 102 73 91 Z" fill="#493229"/>
-  <path d="M99 110 C111 118 131 118 143 110" stroke="#6e3f35" stroke-width="6" fill="none" stroke-linecap="round"/>
-</svg>
