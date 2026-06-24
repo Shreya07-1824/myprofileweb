@@ -72,11 +72,11 @@ window.SiteData = {
       id: "cafe-commerce",
       title: "Local Cafe Ordering Website",
       category: "Frontend",
-      image: "images/project-cafe-commerce.svg",
+      image: "images/projectimg.png",
       summary: "A polished local business website with menu highlights, WhatsApp ordering, testimonials, and SEO sections.",
       details: "Built for restaurants, cafes, and local stores that need fast mobile browsing, clear offers, and easy enquiry paths. The structure supports menu categories, offers, and click-to-order CTAs.",
       tech: ["HTML5", "CSS3", "JavaScript", "Responsive UI"],
-      demo: "pages/contact.html",
+      demo: "https://cafeordering.onrender.com",
       github: "https://github.com/Shreya07-1824"
       
     },
