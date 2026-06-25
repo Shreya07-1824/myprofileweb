@@ -109,7 +109,7 @@
           <section>
             <h2>Newsletter</h2>
             <p>Get practical website and project tips.</p>
-            <form class="newsletter-form" action="${fromRoot("backend/newsletter.php")}" method="post" novalidate data-newsletter-form>
+            <form class="newsletter-form" action= "https://script.google.com/macros/s/AKfycbxE6aSHRogJxQq_eEDLe1dj88opDvS_TegQ23iq4QxOSnjx-DCB6it9IiiXvemm4ALcIQ/exec" method="post" novalidate data-newsletter-form>
               <label class="sr-only" for="newsletter-email">Email address</label>
               <input id="newsletter-email" name="email" type="email" placeholder="Email address" required>
               <button class="icon-btn" type="submit" aria-label="Subscribe">${icon("arrow-right")}</button>
@@ -601,6 +601,97 @@
     });
   }
 
+//   function initNewsletter() {
+
+//     const newsletterForm =
+//         document.querySelector('[data-newsletter-form]');
+
+//     if (!newsletterForm) return;
+
+//     newsletterForm.addEventListener('submit', async (e) => {
+
+//         e.preventDefault();
+
+//         const email =
+//             document.getElementById('newsletter-email').value;
+
+//         const status =
+//             document.querySelector('[data-newsletter-status]');
+
+//         try {
+
+//             await fetch('https://script.google.com/macros/s/AKfycbxE6aSHRogJxQq_eEDLe1dj88opDvS_TegQ23iq4QxOSnjx-DCB6it9IiiXvemm4ALcIQ/exec', {
+//                 method: 'POST',
+//                 body: new URLSearchParams({
+//                     email: email
+//                 })
+//             });
+
+//             status.textContent = 'Subscribed successfully!';
+//             newsletterForm.reset();
+
+//         } catch {
+
+//             status.textContent = 'Subscription failed.';
+//         }
+
+//     });
+
+// }
+function initEmailJSNewsletter() {
+  emailjs.init("RszGvwXNYD3TGx12S");
+
+  const newsletterForm = document.querySelector(".newsletter-form");
+
+  if (!newsletterForm) return;
+
+  newsletterForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("newsletter-email").value;
+
+    emailjs.send(
+      "service_38wc279",
+      "template_i06dfqs",
+      { email: email }
+    )
+    .then(() => {
+      console.log("Subscribed successfully!");
+      newsletterForm.reset();
+    })
+    .catch((error) => {
+      console.error(error);
+      console.error("Failed to subscribe.");
+    });
+  });
+}
+
+function initContactEmailJS() {
+  const form = document.getElementById("contactForm");
+
+  if (!form) return;
+
+  emailjs.init("RszGvwXNYD3TGx12S");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    emailjs.sendForm(
+      "service_38wc279",
+      "template_1rcywrv",
+      form
+    )
+    .then(function () {
+      console.log("Enquiry sent successfully!");
+      form.reset();
+    })
+    .catch(function (error) {
+      console.error("EmailJS Error:", error);
+      console.error("Failed to send enquiry.");
+    });
+  });
+}
+
   document.addEventListener("DOMContentLoaded", () => {
     initLoader();
     buildHeader();
@@ -627,5 +718,9 @@
     initCursorGlow();
     initYear();
     refreshIcons();
+    //initNewsletter();
+    initEmailJSNewsletter();
+    initContactEmailJS();
+    initContactEmailJS();
   });
 })();

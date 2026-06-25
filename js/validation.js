@@ -112,41 +112,41 @@
     });
   }
 
-  function initNewsletter() {
-    const forms = qsa("[data-newsletter-form]");
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    forms.forEach((form) => {
-      const status = qs("[data-newsletter-status]", form);
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const email = form.elements.email.value.trim();
-        if (!emailPattern.test(email)) {
-          status.textContent = "Enter a valid email.";
-          status.className = "error";
-          return;
-        }
-        try {
-          const response = await fetch(form.action, {
-            method: "POST",
-            body: new FormData(form),
-            headers: { "X-Requested-With": "XMLHttpRequest" }
-          });
-          const text = await response.text();
-          let result;
-          try { result = JSON.parse(text); } catch (error) { result = { ok: false, message: "Run PHP/MySQL to store subscriptions." }; }
-          status.textContent = result.message;
-          status.className = result.ok ? "success" : "warning";
-          if (result.ok) form.reset();
-        } catch (error) {
-          status.textContent = "Run PHP/MySQL to store subscriptions.";
-          status.className = "warning";
-        }
-      });
-    });
-  }
+//   function initNewsletter() {
+//     const forms = qsa("[data-newsletter-form]");
+//     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+//     forms.forEach((form) => {
+//       const status = qs("[data-newsletter-status]", form);
+//       form.addEventListener("submit", async (event) => {
+//         event.preventDefault();
+//         const email = form.elements.email.value.trim();
+//         if (!emailPattern.test(email)) {
+//           status.textContent = "Enter a valid email.";
+//           status.className = "error";
+//           return;
+//         }
+//         try {
+//           const response = await fetch(form.action, {
+//             method: "POST",
+//             body: new FormData(form),
+//             headers: { "X-Requested-With": "XMLHttpRequest" }
+//           });
+//           const text = await response.text();
+//           let result;
+//           try { result = JSON.parse(text); } catch (error) { result = { ok: false, message: "Run PHP/MySQL to store subscriptions." }; }
+//           status.textContent = result.message;
+//           status.className = result.ok ? "success" : "warning";
+//           if (result.ok) form.reset();
+//         } catch (error) {
+//           status.textContent = "Run PHP/MySQL to store subscriptions.";
+//           status.className = "warning";
+//         }
+//       });
+//     });
+//   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    initContactForm();
-    initNewsletter();
-  });
-})();
+//   document.addEventListener("DOMContentLoaded", () => {
+//     initContactForm();
+//     initNewsletter();
+//   });
+ })();

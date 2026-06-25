@@ -84,11 +84,11 @@ window.SiteData = {
       id: "java-institute",
       title: "Institute Management System",
       category: "Java",
-      image: "images/project-java-institute.svg",
+      image: "images/projectimg2.png",
       summary: "A Java and MySQL project concept for admissions, fees, student records, attendance, and reports.",
       details: "Suitable for academic submissions and institute operations. It demonstrates database thinking, clean module separation, forms, and report-friendly screens.",
       tech: ["Java", "JDBC", "MySQL", "Swing"],
-      demo: "pages/contact.html",
+      demo: "https://institutemngt.onrender.com",
       github: "https://github.com/Shreya07-1824"
     },
     {
